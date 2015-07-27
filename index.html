@@ -216,7 +216,7 @@
                     }
                 }
                 console.log("Requesting more data");
-                var url = 'http://localhost:5001/api/taskrun?project_id=149&last_id=' + last_id;
+                var url = 'http://localhost:5001/api/taskrun?project_id=149&limit=100&last_id=' + last_id;
                 console.log(url);
                 xhr.open('GET', url, true);
                 xhr.send();
