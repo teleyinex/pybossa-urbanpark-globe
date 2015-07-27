@@ -127,9 +127,9 @@
     <br/>
     <br/>
     <p style="top-padding:10px;">This WebGL demo is built using the Google Chrome Globe WebGL demo from Google Data Arts Team (you can zoom in!). The globe shows the submitted urban parks found by volunteers all over the world using the PyBossa platform.</p>
-    <p><a href="http://pybossa.com">PyBossa</a> is a free, open-source, platform for creating and running crowd-sourcing applications that utilise online assistance in performing tasks that require human cognition, knowledge or intelligence such as image classification, transcription, geocoding and more!</p>
-    <p>In this geo-coding application, volunteers are asked to find an urban park from a list of different cities. The volunteers use a web map to brwose the city, and then submit an answer: the coordinates of the urban park by placing a marker in the map, or saying: I don't find any park.</p>
-    <p>More details about PyBossa at <a href="http://pybossa.com">pybossa.com</a>.</p>
+    <p><a href="http://crowdcrafting.org">Crowdcrafting</a> is a web-based service that invites volunteers to contribute to scientific projects developed by citizens, professionals or institutions that need help to solve problems, analyze data or complete challenging tasks that cant be done by machines alone, but require human intelligence. The platform is 100% open source - that is its software is developed and distributed freely - and 100% open-science, making scientific research accessible to everyone. </p>
+    <p>In this geo-coding project, volunteers are asked to find an urban park (<span id="n_parks">0</span> have been found) from a list of different cities of the world. The volunteers use a web map to brwose the city, and then submit an answer: the coordinates of the urban park by placing a marker in the map, or saying: I don't find any park.</p>
+    <p>More details about Crowdcrafting at <a href="http://crowdcrafting.org">Crowdcrafting.org</a>.</p>
   </div>
 
   <div id="title">
@@ -155,7 +155,7 @@
       var years = ['Urban Parks'];
       var container = document.getElementById('container');
       var globe = new DAT.Globe(container);
-      console.log(globe);
+      // console.log(globe);
       var i, tweens = [];
 
       var settime = function(globe, t) {
@@ -181,10 +181,14 @@
       var xhr;
       TWEEN.start();
 
+      var n = 0;
+
+      window.all_points = [];
+
 
       xhr = new XMLHttpRequest();
       //xhr.open('GET', 'globe/population909500.json', true);
-      xhr.open('GET', 'http://crowdcrafting.org/api/taskrun?project_id=149&limit=1000', true);
+      xhr.open('GET', 'http://localhost:5001/api/taskrun?project_id=149&limit=100', true);
       xhr.onreadystatechange = function(e) {
         if (xhr.readyState === 4) {
           if (xhr.status === 200) {
@@ -195,27 +199,44 @@
             //console.log(data[0]['info']['urbanpark']['geometry']['coordinates']);
             window.data = data;
             var d = [];
-            console.log(data[0]);
-            if ('coordinates' in data[0]['info']['urbanpark']['geometry'])
-                console.log("True");
-            for (i=0;i<data.length;i++) {
-                console.log(data[i]);
-                if (data[i]['info']['urbanpark']!='NoPark')
-                {
-                d.push(data[i]['info']['urbanpark']['geometry']['coordinates'][1],
-                       data[i]['info']['urbanpark']['geometry']['coordinates'][0],
-                        0.07);
+            //console.log(data[0]);
+            if ((data.length > 0) && (n< 10000)){
+                var last_id = data[data.length -1].id;
+                console.log(last_id);
+                for (i=0;i<data.length;i++) {
+                    if ('info' in data[i]) {
+                        if ('urbanpark' in data[i]['info']) {
+                            if ((typeof data[i]['info']['urbanpark'] === 'object') && ('geometry' in data[i]['info']['urbanpark'])) {
+                            console.log(data[i]['urbanpark']);
+                            window.all_points.push(data[i]['info']['urbanpark']['geometry']['coordinates'][1],
+                               data[i]['info']['urbanpark']['geometry']['coordinates'][0],
+                                0.07);
+                            }
+                        }
+                    }
                 }
+                console.log("Requesting more data");
+                var url = 'http://localhost:5001/api/taskrun?project_id=149&last_id=' + last_id;
+                console.log(url);
+                xhr.open('GET', url, true);
+                xhr.send();
+                console.log(xhr.readyState);
+                n = n + 20;
             }
-            d = [['Urban Parks', d]];
-            console.log(d);
-            data = d;
-            for (i=0;i<data.length;i++) {
-              globe.addData(data[i][1], {format: 'magnitude', name: data[i][0], animated: true});
+            else {
+                console.log(window.all_points.length);
+                document.getElementById("n_parks").innerHTML = window.all_points.length;
+                var d = [['Urban Parks', window.all_points]];
+                //console.log(d);
+                data = d;
+                for (i=0;i<data.length;i++) {
+                  globe.addData(data[i][1], {format: 'magnitude', name: data[i][0], animated: true});
+                }
+                globe.createPoints();
+                settime(globe,0)();
+                console.log(globe);
+                globe.animate();
             }
-            globe.createPoints();
-            settime(globe,0)();
-            globe.animate();
           }
         }
       };
