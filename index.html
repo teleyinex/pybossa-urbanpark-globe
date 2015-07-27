@@ -184,7 +184,7 @@
 
       xhr = new XMLHttpRequest();
       //xhr.open('GET', 'globe/population909500.json', true);
-      xhr.open('GET', 'http://crowdcrafting.org/api/taskrun?app_id=149&limit=1000', true);
+      xhr.open('GET', 'http://crowdcrafting.org/api/taskrun?project_id=149&limit=1000', true);
       xhr.onreadystatechange = function(e) {
         if (xhr.readyState === 4) {
           if (xhr.status === 200) {
