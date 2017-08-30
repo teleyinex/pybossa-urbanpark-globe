@@ -119,7 +119,7 @@
 <a href="https://github.com/teleyinex/pybossa-urbanpark-globe"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png" alt="Fork me on GitHub"></a>
 
   <div id="info">
-    <strong><a href="http://www.chromeexperiments.com/globe">WebGL Globe</a></strong> <span class="bull">&bull;</span> Created by the Google Data Arts Team <span class="bull">&bull;</span> Data acquired from <a href="http://crowdcrafting.org/project/urbanpark">Crowdcrafting</a>
+    <strong><a href="http://www.chromeexperiments.com/globe">WebGL Globe</a></strong> <span class="bull">&bull;</span> Created by the Google Data Arts Team <span class="bull">&bull;</span> Data acquired from <a href="https://crowdcrafting.org/project/urbanpark">Crowdcrafting</a>
   </div>
 
   <div id="currentInfo">
@@ -127,9 +127,9 @@
     <br/>
     <br/>
     <p style="top-padding:10px;">This WebGL demo is built using the Google Chrome Globe WebGL demo from Google Data Arts Team (you can zoom in!). The globe shows the submitted urban parks found by volunteers all over the world using the Crowdcrafting platform.</p>
-    <p><a href="http://crowdcrafting.org">Crowdcrafting</a> is a web-based service that invites volunteers to contribute to scientific projects developed by citizens, professionals or institutions that need help to solve problems, analyze data or complete challenging tasks that cant be done by machines alone, but require human intelligence. The platform is 100% open source - that is its software is developed and distributed freely - and 100% open-science, making scientific research accessible to everyone. </p>
+    <p><a href="https://crowdcrafting.org">Crowdcrafting</a> is a web-based service that invites volunteers to contribute to scientific projects developed by citizens, professionals or institutions that need help to solve problems, analyze data or complete challenging tasks that cant be done by machines alone, but require human intelligence. The platform is 100% open source - that is its software is developed and distributed freely - and 100% open-science, making scientific research accessible to everyone. </p>
     <p>In this geo-coding project, volunteers are asked to find an urban park (<span id="n_parks">0</span> have been found) from a list of different cities of the world. The volunteers use a web map to brwose the city, and then submit an answer: the coordinates of the urban park by placing a marker in the map, or saying: I don't find any park.</p>
-    <p>More details about Crowdcrafting at <a href="http://crowdcrafting.org">Crowdcrafting.org</a>.</p>
+    <p>More details about Crowdcrafting at <a href="https://crowdcrafting.org">Crowdcrafting.org</a>.</p>
   </div>
 
   <div id="title">
@@ -188,7 +188,7 @@
 
       xhr = new XMLHttpRequest();
       //xhr.open('GET', 'globe/population909500.json', true);
-      xhr.open('GET', 'http://crowdcrafting.org/api/taskrun?project_id=149&limit=100', true);
+      xhr.open('GET', 'https://crowdcrafting.org/api/taskrun?project_id=149&limit=100', true);
       xhr.onreadystatechange = function(e) {
         if (xhr.readyState === 4) {
           if (xhr.status === 200) {
@@ -216,7 +216,7 @@
                     }
                 }
                 console.log("Requesting more data");
-                var url = 'http://crowdcrafting.org/api/taskrun?project_id=149&limit=100&last_id=' + last_id;
+                var url = 'https://crowdcrafting.org/api/taskrun?project_id=149&limit=100&last_id=' + last_id;
                 console.log(url);
                 xhr.open('GET', url, true);
                 xhr.send();
